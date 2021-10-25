@@ -2,7 +2,6 @@ import pygame as pg
 from pygame.draw import *
 
 
-
 def draw_picture(screen, x, y, width, height):
     """
 
@@ -17,8 +16,8 @@ def draw_picture(screen, x, y, width, height):
 
     draw_background(screen, x, y, width, height)
 
-    people_x = width // 2
-    people_y = height * 5 // 6
+    people_x = width // 4
+    people_y = height // 6
     people_height = height * 2 // 3
 
     draw_people(screen, people_x, people_y, people_height)
@@ -43,17 +42,38 @@ def draw_background(screen, x, y, width, height):
 
 
 def draw_people(screen, x, y, height):
+    image = pg.Surface((100, 90))
+    image.fill(KEY)
+    pg.draw.lines(image, BLACK, False, [(25, 60), (15, 85), (10, 85)])  # левая нога мальчика
+    pg.draw.lines(image, BLACK, False, [(30, 60), (40, 85), (45, 85)])  # правая нога мальчика
+    pg.draw.ellipse(image, VIOLET, [(15, 20), (25, 47)])
+    pg.draw.circle(image, SKIN, (27, 13), 10)
+    pg.draw.aaline(image, BLACK, (35, 25), (50, 55)) # правая рука мальчика
+    pg.draw.aaline(image, BLACK, (20, 25), (5, 55)) # левая рука мальчтка
+    pg.draw.polygon(image, PINK, [(75, 20), (90, 65), (60, 65)])
+    pg.draw.circle(image, SKIN, (75, 13), 10)
+    pg.draw.aaline(image, BLACK, (71, 26), (50, 55)) # левая рука девочик
+    pg.draw.lines(image, BLACK, False, [(77, 26), (85, 40), (95, 30)]) # правая рука девочки
+    pg.draw.lines(image, BLACK, False, [(70, 65), (70, 85), (65, 85)]) # левая нога девочки
+    pg.draw.lines(image, BLACK, False, [(80, 65), (80, 85), (85, 85)]) # правая нога девочки
+    pg.transform.scale(image, (height, height))
+    image.set_colorkey(KEY)
+    new_image = pg.transform.scale(image, [height, height])
+    screen.blit(new_image, (x, y))
+
     print('Рисую людей:', x, y, height)
 
 
 def draw_icecream(screen, icecream_x, icecream_y, icecream_size):
-    sc1 = pg.Surface((80, 80)).convert_alpha()
+    sc1 = pg.Surface((80, 80))
+    sc1.fill(KEY)
     pg.draw.polygon(sc1, YELLOW, ((40, 80), (20, 40), (60, 40)))
     pg.draw.circle(sc1, BROWN, (30, 30), 12)
     pg.draw.circle(sc1, RED, (50, 30), 12)
     pg.draw.circle(sc1, WHITE, (40, 20), 12)
     pg.transform.scale(sc1, (icecream_size, icecream_size))
     pg.transform.rotate(sc1, 30)
+    sc1.set_colorkey(KEY)
     screen.blit(sc1, (icecream_x, icecream_y))
     print('Мороженое добавлено')
 
@@ -80,13 +100,17 @@ def draw_balloon(screen, shape, x, y, size):
 
 pg.init()
 width, height = screen_size = (300, 200)
-BLUE = (0, 0, 150)
-GREEN = (0, 150, 0)
+BLUE = (142, 225, 250)
+GREEN = (74, 168, 112)
 BLACK = (0, 0, 0)
 YELLOW = (245, 207, 17)
 BROWN = (120, 65, 2)
 RED = (245, 23, 7)
 WHITE = (255, 255, 255)
+SKIN = (252, 223, 179)
+VIOLET = (156, 103, 161)
+PINK = (245, 122, 233)
+KEY = (100, 100, 100)
 angle = 0
 screen = pg.display.set_mode(screen_size)
 
@@ -102,3 +126,4 @@ while work_flag:
             work_flag = False
 
 print('Программа благополучно завершена.')
+
