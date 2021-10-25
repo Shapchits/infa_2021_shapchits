@@ -80,18 +80,22 @@ def draw_icecream(screen, icecream_x, icecream_y, icecream_size):
 
 
 def draw_balloon(screen, shape, x, y, size):
-    sc2 = pg.Surface((80, 180)).convert_alpha()
-    pg.draw.aaline(sc2, BLACK, (40, 180), (40, 80))
+    image = pg.Surface((80, 160))
+    image.fill(KEY)
+    pg.draw.line(image, BLACK, (40, 160), (40, 80), width=2)
     if shape == 'heart':
-        pg.draw.polygon(sc2, RED, ((40, 80), (20, 40), (60, 40)))
-        pg.draw.circle(sc2, RED, (30, 40), 10)
-        pg.draw.circle(sc2, RED, (50, 40), 10)
+        pg.draw.polygon(image, RED, ((40, 80), (20, 40), (60, 40)))
+        pg.draw.circle(image, RED, (30, 40), 10)
+        pg.draw.circle(image, RED, (50, 40), 10)
     elif shape == 'ice-cream':
-        pg.draw.polygon(sc2, YELLOW, ((40, 80), (20, 40), (60, 40)))
-        pg.draw.circle(sc2, BROWN, (30, 30), 12)
-        pg.draw.circle(sc2, RED, (50, 30), 12)
-        pg.draw.circle(sc2, WHITE, (40, 20), 12)
-    pg.transform.scale(sc2, (size, int(2.25 * size)))
+        pg.draw.polygon(image, YELLOW, ((40, 80), (20, 40), (60, 40)))
+        pg.draw.circle(image, BROWN, (30, 30), 12)
+        pg.draw.circle(image, RED, (50, 30), 12)
+        pg.draw.circle(image, WHITE, (40, 20), 12)
+    image.set_colorkey(KEY)
+    image = pg.transform.scale(image, (size, int(2.25 * size)))
+    image = pg.transform.rotate(image, -20)
+    screen.blit(image, (x, y))
 
 
 
