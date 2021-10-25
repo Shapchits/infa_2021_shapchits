@@ -5,7 +5,7 @@ from pygame.draw import *
 def draw_picture(screen, x, y, width, height):
     draw_background(screen, x, y, width, height)
 
-    people_x = width // 4
+    people_x = width // 2 - height * 3 // 8
     people_y = height // 5
     people_height = height * 3 // 4
 
@@ -17,7 +17,7 @@ def draw_picture(screen, x, y, width, height):
 
     draw_icecream(screen, icecream_x, icecream_y, icecream_size)
 
-    balloon_x = width // 5 + height // 1.5
+    balloon_x = people_x + height * 23 // 40
     balloon_y = height // 6
     balloon_size = icecream_size
 
@@ -25,8 +25,8 @@ def draw_picture(screen, x, y, width, height):
 
 
 def draw_background(screen, x, y, width, height):
-    rect(screen, BLUE, (0, 0, width, height // 2))
-    rect(screen, GREEN, (0, height // 2, width, height))
+    rect(screen, BLUE, (x, y, width, height // 2))
+    rect(screen, GREEN, (x, height // 2, width, height))
 
 
 def draw_people(screen, x, y, height):
@@ -38,12 +38,12 @@ def draw_people(screen, x, y, height):
     pg.draw.circle(image, SKIN, (27, 13), 10)
     pg.draw.aaline(image, BLACK, (35, 25), (50, 55)) # правая рука мальчика
     pg.draw.aaline(image, BLACK, (20, 25), (5, 55)) # левая рука мальчика
+    pg.draw.lines(image, BLACK, False, [(70, 65), (70, 85), (65, 85)])  # левая нога девочки
+    pg.draw.lines(image, BLACK, False, [(80, 65), (80, 85), (85, 85)])  # правая нога девочки
     pg.draw.polygon(image, PINK, [(75, 20), (90, 65), (60, 65)])
     pg.draw.circle(image, SKIN, (75, 13), 10)
     pg.draw.aaline(image, BLACK, (73, 26), (50, 55)) # левая рука девочки
     pg.draw.lines(image, BLACK, False, [(77, 26), (85, 40), (95, 30)]) # правая рука девочки
-    pg.draw.lines(image, BLACK, False, [(70, 65), (70, 85), (65, 85)]) # левая нога девочки
-    pg.draw.lines(image, BLACK, False, [(80, 65), (80, 85), (85, 85)]) # правая нога девочки
     image.set_colorkey(KEY)
     image = pg.transform.scale(image, [height, height * 9 // 10])
     screen.blit(image, (x, y))
@@ -82,7 +82,7 @@ def draw_balloon(screen, shape, x, y, size):
 
 
 pg.init()
-width, height = screen_size = (300, 200)
+width, height = screen_size = (450, 300)
 BLUE = (142, 225, 250)
 GREEN = (74, 168, 112)
 BLACK = (0, 0, 0)
@@ -97,7 +97,6 @@ KEY = (100, 100, 100)
 angle = 0
 screen = pg.display.set_mode(screen_size)
 
-# Здесь будем рисовать
 draw_picture(screen, 0, 0, width, height)
 pg.display.update()
 
