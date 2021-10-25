@@ -3,42 +3,30 @@ from pygame.draw import *
 
 
 def draw_picture(screen, x, y, width, height):
-    """
-
-    :param screen: дисплей pygame, на котором будет изображение
-    :param x: левая координата прямоугольника с рисунком
-    :param y: верхняя координата прямоугольника с рисунком
-    :param width: ширина прямоугольника
-    :param height: высота прямоугольника
-    :return: рисует картинку
-    """
-    print('Рисую картинку.', x, y, width, height)
-
     draw_background(screen, x, y, width, height)
 
     people_x = width // 4
-    people_y = height // 6
-    people_height = height * 2 // 3
+    people_y = height // 5
+    people_height = height * 3 // 4
 
     draw_people(screen, people_x, people_y, people_height)
 
-    icecream_x = width // 6
-    icecream_y = height * 7 // 12
     icecream_size = people_height // 4
+    icecream_x = people_x - icecream_size + height // 15
+    icecream_y = people_y - icecream_size + height // 2.5
 
-    balloon_size = people_height // 2
     draw_icecream(screen, icecream_x, icecream_y, icecream_size)
 
-    balloon_x = width * 5 // 6
+    balloon_x = width // 5 + height // 1.5
     balloon_y = height // 6
     balloon_size = icecream_size
+
     draw_balloon(screen, 'heart', balloon_x, balloon_y, balloon_size)
 
 
 def draw_background(screen, x, y, width, height):
     rect(screen, BLUE, (0, 0, width, height // 2))
     rect(screen, GREEN, (0, height // 2, width, height))
-    print('Рисую фон:', x, y, width, height)
 
 
 def draw_people(screen, x, y, height):
@@ -49,22 +37,19 @@ def draw_people(screen, x, y, height):
     pg.draw.ellipse(image, VIOLET, [(15, 20), (25, 47)])
     pg.draw.circle(image, SKIN, (27, 13), 10)
     pg.draw.aaline(image, BLACK, (35, 25), (50, 55)) # правая рука мальчика
-    pg.draw.aaline(image, BLACK, (20, 25), (5, 55)) # левая рука мальчтка
+    pg.draw.aaline(image, BLACK, (20, 25), (5, 55)) # левая рука мальчика
     pg.draw.polygon(image, PINK, [(75, 20), (90, 65), (60, 65)])
     pg.draw.circle(image, SKIN, (75, 13), 10)
-    pg.draw.aaline(image, BLACK, (71, 26), (50, 55)) # левая рука девочик
+    pg.draw.aaline(image, BLACK, (73, 26), (50, 55)) # левая рука девочки
     pg.draw.lines(image, BLACK, False, [(77, 26), (85, 40), (95, 30)]) # правая рука девочки
     pg.draw.lines(image, BLACK, False, [(70, 65), (70, 85), (65, 85)]) # левая нога девочки
     pg.draw.lines(image, BLACK, False, [(80, 65), (80, 85), (85, 85)]) # правая нога девочки
-    pg.transform.scale(image, (height, height))
     image.set_colorkey(KEY)
-    image = pg.transform.scale(image, [height, height])
+    image = pg.transform.scale(image, [height, height * 9 // 10])
     screen.blit(image, (x, y))
 
-    print('Рисую людей:', x, y, height)
 
-
-def draw_icecream(screen, icecream_x, icecream_y, icecream_size):
+def draw_icecream(screen, x, y, size):
     image = pg.Surface((80, 80))
     image.fill(KEY)
     pg.draw.polygon(image, YELLOW, ((40, 80), (20, 40), (60, 40)))
@@ -72,11 +57,9 @@ def draw_icecream(screen, icecream_x, icecream_y, icecream_size):
     pg.draw.circle(image, RED, (50, 30), 12)
     pg.draw.circle(image, WHITE, (40, 20), 12)
     image.set_colorkey(KEY)
-    image = pg.transform.scale(image, (icecream_size, icecream_size))
+    image = pg.transform.scale(image, (size, size))
     image = pg.transform.rotate(image, 30)
-    screen.blit(image, (icecream_x, icecream_y))
-    print('Мороженое добавлено')
-
+    screen.blit(image, (x, y))
 
 
 def draw_balloon(screen, shape, x, y, size):
@@ -93,13 +76,9 @@ def draw_balloon(screen, shape, x, y, size):
         pg.draw.circle(image, RED, (50, 30), 12)
         pg.draw.circle(image, WHITE, (40, 20), 12)
     image.set_colorkey(KEY)
-    image = pg.transform.scale(image, (size, int(2.25 * size)))
+    image = pg.transform.scale(image, (size, (2 * size)))
     image = pg.transform.rotate(image, -20)
     screen.blit(image, (x, y))
-
-
-
-    print('Рисую шар:')
 
 
 pg.init()
@@ -130,4 +109,3 @@ while work_flag:
             work_flag = False
 
 print('Программа благополучно завершена.')
-
