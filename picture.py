@@ -58,23 +58,23 @@ def draw_people(screen, x, y, height):
     pg.draw.lines(image, BLACK, False, [(80, 65), (80, 85), (85, 85)]) # правая нога девочки
     pg.transform.scale(image, (height, height))
     image.set_colorkey(KEY)
-    new_image = pg.transform.scale(image, [height, height])
-    screen.blit(new_image, (x, y))
+    image = pg.transform.scale(image, [height, height])
+    screen.blit(image, (x, y))
 
     print('Рисую людей:', x, y, height)
 
 
 def draw_icecream(screen, icecream_x, icecream_y, icecream_size):
-    sc1 = pg.Surface((80, 80))
-    sc1.fill(KEY)
-    pg.draw.polygon(sc1, YELLOW, ((40, 80), (20, 40), (60, 40)))
-    pg.draw.circle(sc1, BROWN, (30, 30), 12)
-    pg.draw.circle(sc1, RED, (50, 30), 12)
-    pg.draw.circle(sc1, WHITE, (40, 20), 12)
-    pg.transform.scale(sc1, (icecream_size, icecream_size))
-    pg.transform.rotate(sc1, 30)
-    sc1.set_colorkey(KEY)
-    screen.blit(sc1, (icecream_x, icecream_y))
+    image = pg.Surface((80, 80))
+    image.fill(KEY)
+    pg.draw.polygon(image, YELLOW, ((40, 80), (20, 40), (60, 40)))
+    pg.draw.circle(image, BROWN, (30, 30), 12)
+    pg.draw.circle(image, RED, (50, 30), 12)
+    pg.draw.circle(image, WHITE, (40, 20), 12)
+    image.set_colorkey(KEY)
+    image = pg.transform.scale(image, (icecream_size, icecream_size))
+    image = pg.transform.rotate(image, 30)
+    screen.blit(image, (icecream_x, icecream_y))
     print('Мороженое добавлено')
 
 
