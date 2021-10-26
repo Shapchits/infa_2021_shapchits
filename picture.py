@@ -5,23 +5,22 @@ from pygame.draw import *
 def draw_picture(screen, x, y, width, height):
     draw_background(screen, x, y, width, height)
 
-    people_x = width // 2 - height * 3 // 8
+    people_x = width // 2 - height * 2 // 3 + width // 20
     people_y = height // 5
-    people_height = height * 3 // 4
+    people_height = height * 2 // 3
 
-    draw_people(screen, people_x, people_y, people_height)
+    draw_people(screen, people_x, people_y, people_height, reversal=False)
+    draw_people(screen, width // 2, people_y, people_height, reversal=True)
 
     icecream_size = people_height // 4
-    icecream_x = people_x - icecream_size + height // 15
-    icecream_y = people_y - icecream_size + height // 2.5
+    icecream_x = width // 2 + people_height * 4 // 5
+    icecream_y = people_y - icecream_size + height // 2.7
 
-    draw_icecream(screen, icecream_x, icecream_y, icecream_size)
-
-    balloon_x = people_x + height * 23 // 40
-    balloon_y = height // 6
-    balloon_size = icecream_size
-
-    draw_balloon(screen, 'heart', balloon_x, balloon_y, balloon_size)
+    draw_icecream(screen, icecream_x, icecream_y, icecream_size, -30)
+    draw_balloon(screen, 'ice-cream', width // 2 - people_height // 5,
+                 people_y - people_height * 3 // 10, people_height // 3, 10)
+    draw_balloon(screen, 'heart', people_x - people_height // 4,
+                 icecream_y - people_height // 4, people_height // 4, 20)
 
 
 def draw_background(screen, x, y, width, height):
@@ -29,7 +28,7 @@ def draw_background(screen, x, y, width, height):
     rect(screen, GREEN, (x, height // 2, width, height))
 
 
-def draw_people(screen, x, y, height):
+def draw_people(screen, x, y, height, reversal):
     image = pg.Surface((100, 90))
     image.fill(KEY)
     pg.draw.lines(image, BLACK, False, [(25, 60), (15, 85), (10, 85)])  # левая нога мальчика
@@ -46,10 +45,12 @@ def draw_people(screen, x, y, height):
     pg.draw.lines(image, BLACK, False, [(77, 26), (85, 40), (95, 30)]) # правая рука девочки
     image.set_colorkey(KEY)
     image = pg.transform.scale(image, [height, height * 9 // 10])
+    if reversal:
+        image = pg.transform.flip(image, True, False)
     screen.blit(image, (x, y))
 
 
-def draw_icecream(screen, x, y, size):
+def draw_icecream(screen, x, y, size, angle):
     image = pg.Surface((80, 80))
     image.fill(KEY)
     pg.draw.polygon(image, YELLOW, ((40, 80), (20, 40), (60, 40)))
@@ -58,11 +59,11 @@ def draw_icecream(screen, x, y, size):
     pg.draw.circle(image, WHITE, (40, 20), 12)
     image.set_colorkey(KEY)
     image = pg.transform.scale(image, (size, size))
-    image = pg.transform.rotate(image, 30)
+    image = pg.transform.rotate(image, angle)
     screen.blit(image, (x, y))
 
 
-def draw_balloon(screen, shape, x, y, size):
+def draw_balloon(screen, shape, x, y, size, angle):
     image = pg.Surface((80, 160))
     image.fill(KEY)
     pg.draw.line(image, BLACK, (40, 160), (40, 80), width=2)
@@ -77,7 +78,7 @@ def draw_balloon(screen, shape, x, y, size):
         pg.draw.circle(image, WHITE, (40, 20), 12)
     image.set_colorkey(KEY)
     image = pg.transform.scale(image, (size, (2 * size)))
-    image = pg.transform.rotate(image, -20)
+    image = pg.transform.rotate(image, angle)
     screen.blit(image, (x, y))
 
 
