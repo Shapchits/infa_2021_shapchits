@@ -23,19 +23,15 @@ class Ball(pg.sprite.Sprite):
 
     def __init__(self, min_radius, max_radius, max_speed):
         pg.sprite.Sprite.__init__(self)
-        self.radius = randint(min_radius, max_radius)
-        self.x = randint(max_radius, screen_size[0] - max_radius)
-        self.y = randint(max_radius, screen_size[1] - max_radius)
-        self.speed_x = randint(-max_speed, max_speed)
-        self.speed_y = randint(-max_speed, max_speed)
+        self.image = self.draw_ball()
+        self.rect = self.image.get_rect(center=(randint(max_radius, screen_size[0] - max_radius),
+                                                randint(max_radius, screen_size[1] - max_radius)))
 
-    def create_ball(self, min_radius, max_radius, max_speed):
-        radius = randint(min_radius, max_radius)
-        x = randint(max_radius, screen_size[0] - max_radius)
-        y = randint(max_radius, screen_size[1] - max_radius)
-        speed_x = randint(-max_speed, max_speed)
-        speed_y = randint(-max_speed, max_speed)
-        return x, y, radius, speed_x, speed_y
+    self.radius = randint(min_radius, max_radius)
+    self.x = randint(max_radius, screen_size[0] - max_radius)
+    self.y = randint(max_radius, screen_size[1] - max_radius)
+    self.speed_x = randint(-max_speed, max_speed)
+    self.speed_y = randint(-max_speed, max_speed)
 
 
     def draw_ball(self, x, y, radius):
