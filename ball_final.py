@@ -20,6 +20,19 @@ COLOURS = [YELLOW, PURPLE, GREEN]
 class Ball(pg.sprite.Sprite):
 
     def __init__(self):
+        """
+        Инициализирует класс Ball.
+        Атрибуты:
+            min_radius (int): минимально возможный радиус шара
+            max_radius (int): максимально возможный радиус шара
+            min_speed (int): минимально возможная скорость шара
+            max_speed (int): максимально возможная скорость шара
+            radius (int): радиус шара
+            ball_speed_x (int): горизонтальная проекция скорости шара
+            ball_speed_y (int): вертикальная проекция скорости шара
+            image (pg.Surface): поверхность, на которой будет изображение шара
+            rect (pg.Rect): задает положение изображения шара на игровом поле
+        """
         pg.sprite.Sprite.__init__(self)
         self.min_radius = 20
         self.max_radius = 100
@@ -38,6 +51,14 @@ class Ball(pg.sprite.Sprite):
                                                 randint(self.max_radius, screen_size[1] - self.max_radius)))
 
     def update(self, screen_size, time_interval):
+        """
+        Обновляет положение спрайта на игровом поле, регулирует отражение шара от стен.
+        :param screen_size: размеры игрового поля
+        :type screen_size: tuple
+        :param time_interval: временной промежуток
+        :type time_interval: float
+        :return: None
+        """
         if self.rect.x <= 0:
             self.ball_speed_x = abs(self.ball_speed_x)
         elif self.rect.x >= screen_size[0] - 2 * self.radius:
@@ -50,6 +71,13 @@ class Ball(pg.sprite.Sprite):
         self.rect.y += self.ball_speed_y * time_interval
 
     def ball_push(self, event, balls):
+        """
+        Проверяет, попал ли игрок по шарику, и в случае попадания удаляет данный шар и создает на игровом поле новый.
+        :param event: событие от игрока
+        :type event: Event
+        :param balls: группа спрайтов
+        :return: pygame.sprite.Group
+        """
         if (event.pos[0] - (self.rect.x + self.radius)) ** 2 + \
                 (event.pos[1] - (self.rect.y + self.radius)) ** 2 <= self.radius ** 2:
             self.kill()
@@ -75,7 +103,7 @@ if __name__ == '__main__':
 
         for event in pg.event.get():
             if event.type == pg.QUIT:
-                 finished = True
+                finished = True
             elif event.type == pg.MOUSEBUTTONDOWN:
                 for ball in balls:
                     ball.ball_push(event, balls)
