@@ -8,11 +8,14 @@ timer = 0
 time_interval = 1 / FPS
 ball_number = 5
 score = 0
+font_name = 'Arial'
+font_size = 100
 
 YELLOW = (217, 173, 0)
 PURPLE = (198, 134, 217)
 GREEN = (117, 176, 77)
-BACKGROUND = (132, 217, 210)
+BACKGROUND1 = (132, 217, 210)
+BACKGROUND2 = (237, 240, 153)
 KEY = (100, 100, 100)
 BLACK = (0, 0, 0)
 COLOURS = [YELLOW, PURPLE, GREEN]
@@ -92,8 +95,19 @@ class Ball(pg.sprite.Sprite):
             return True
 
 
+def final(score):
+    screen.fill(BACKGROUND2)
+    final_phrase = font.render('Your resut is: ', True, BLACK)
+    text_score = font.render(str(score), True, BLACK)
+    screen.blit(final_phrase, (screen_size[0] // 4, screen_size[1] // 3))
+    screen.blit(text_score, (screen_size[0] * 2 // 5, screen_size[1] * 2 // 3))
+    pg.display.update()
+
+
 if __name__ == '__main__':
     pg.init()
+    pg.font.init()
+    font = pg.font.SysFont(font_name, font_size)
     screen = pg.display.set_mode(screen_size)
     pg.display.update()
     clock = pg.time.Clock()
@@ -106,21 +120,25 @@ if __name__ == '__main__':
     while not finished:
         clock.tick(FPS)
         timer += 1
-        if timer >= 3000:
+        if timer >= 1000:
             finished = True
 
         for event in pg.event.get():
             if event.type == pg.QUIT:
-                finished = True
+                pg.quit()
             elif event.type == pg.MOUSEBUTTONDOWN:
                 for ball in balls:
-                    ball.ball_push(event, balls)
                     if ball.ball_push(event, balls):
                         score += ball.ball_score
 
-        screen.fill(BACKGROUND)
+        screen.fill(BACKGROUND1)
         balls.draw(screen)
         pg.display.update()
-
         balls.update(screen_size, time_interval)
-    print(score)
+
+    while finished:
+        clock.tick(FPS)
+        final(score)
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+               exit()
