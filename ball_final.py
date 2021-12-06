@@ -7,6 +7,7 @@ screen_size = (900, 600)
 timer = 0
 time_interval = 1 / FPS
 ball_number = 5
+score = 0
 
 YELLOW = (217, 173, 0)
 PURPLE = (198, 134, 217)
@@ -30,17 +31,19 @@ class Ball(pg.sprite.Sprite):
             radius (int): радиус шара
             ball_speed_x (int): горизонтальная проекция скорости шара
             ball_speed_y (int): вертикальная проекция скорости шара
+            ball_score (int): количество очков, начисляемых за попадание по шарику
             image (pg.Surface): поверхность, на которой будет изображение шара
             rect (pg.Rect): задает положение изображения шара на игровом поле
         """
         pg.sprite.Sprite.__init__(self)
         self.min_radius = 20
         self.max_radius = 100
-        self.min_speed = 65
-        self.max_speed = 130
+        self.min_speed = 60
+        self.max_speed = 120
         self.radius = randint(self.min_radius, self.max_radius)
         self.ball_speed_x = randint(self.min_speed, self.max_speed)
         self.ball_speed_y = randint(self.min_speed, self.max_speed)
+        self.ball_score = 15
         self.image = pg.Surface([2 * self.radius, 2 * self.radius])
         self.image.fill(KEY)
         color = COLOURS[randint(0, len(COLOURS) - 1)]
@@ -72,16 +75,21 @@ class Ball(pg.sprite.Sprite):
 
     def ball_push(self, event, balls):
         """
-        Проверяет, попал ли игрок по шарику, и в случае попадания удаляет данный шар и создает на игровом поле новый.
+        Проверяет, попал ли игрок по шарику, и в случае попадания возвращает True, удаляет данный шар и создает на
+         игровом поле новый.
         :param event: событие от игрока
         :type event: Event
+        :param score: число очков
+        :type score: int
         :param balls: группа спрайтов
-        :return: pygame.sprite.Group
+        :type balls: pygame.sprite.Group
         """
         if (event.pos[0] - (self.rect.x + self.radius)) ** 2 + \
                 (event.pos[1] - (self.rect.y + self.radius)) ** 2 <= self.radius ** 2:
+
             self.kill()
             balls.add(Ball())
+            return True
 
 
 if __name__ == '__main__':
@@ -107,9 +115,12 @@ if __name__ == '__main__':
             elif event.type == pg.MOUSEBUTTONDOWN:
                 for ball in balls:
                     ball.ball_push(event, balls)
+                    if ball.ball_push(event, balls):
+                        score += ball.ball_score
 
         screen.fill(BACKGROUND)
         balls.draw(screen)
         pg.display.update()
 
         balls.update(screen_size, time_interval)
+    print(score)
